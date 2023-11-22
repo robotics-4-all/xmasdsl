@@ -18,6 +18,8 @@ from xmasdsl.language import (
     validate_model_file
 )
 
+from xmasdsl.m2t import model_to_json
+
 API_KEY = os.getenv("API_KEY", "API_KEY")
 
 api_keys = [
@@ -45,7 +47,7 @@ api.add_middleware(
     allow_headers=["*"],
 )
 
-TMP_DIR = '/tmp/smauto'
+TMP_DIR = '/tmp/xmasdsl'
 
 
 if not os.path.exists(TMP_DIR):
@@ -76,7 +78,7 @@ async def validate(model: ValidationModel,
     u_id = uuid.uuid4().hex[0:8]
     fpath = os.path.join(
         TMP_DIR,
-        f'model_for_validation-{u_id}.auto'
+        f'model_for_validation-{u_id}.xmas'
     )
     with open(fpath, 'w') as f:
         f.write(text)
@@ -106,7 +108,7 @@ async def validate_file(file: UploadFile = File(...),
     u_id = uuid.uuid4().hex[0:8]
     fpath = os.path.join(
         TMP_DIR,
-        f'model_for_validation-{u_id}.auto'
+        f'model_for_validation-{u_id}.xmas'
     )
     with open(fpath, 'w') as f:
         f.write(fd.read().decode('utf8'))
@@ -136,7 +138,7 @@ async def validate_b64(base64_model: str,
     u_id = uuid.uuid4().hex[0:8]
     fpath = os.path.join(
         TMP_DIR,
-        'model_for_validation-{}.auto'.format(u_id)
+        f'model_for_validation-{u_id}.xmas'
     )
     with open(fpath, 'wb') as f:
         f.write(fdec)
@@ -154,18 +156,18 @@ async def validate_b64(base64_model: str,
 
 
 @api.post("/generate")
-async def gen_json(gen_auto_model: TransformationModel = Body(...),
+async def gen_json(xmas_model: TransformationModel = Body(...),
                    api_key: str = Security(get_api_key)):
     resp = {
         'status': 200,
         'message': '',
-        'code': ''
+        'model_json': ''
     }
-    model =  gen_auto_model.model
+    model =  xmas_model.model
     u_id = uuid.uuid4().hex[0:8]
     model_path = os.path.join(
         TMP_DIR,
-        f'model-{u_id}.auto'
+        f'model-{u_id}.xmas'
     )
     gen_path = os.path.join(
         TMP_DIR,
@@ -177,10 +179,10 @@ async def gen_json(gen_auto_model: TransformationModel = Body(...),
         f.write(model)
     try:
         ## TODO
-        code: str = ""
-        resp['message'] = 'NOT IMPLEMENTED YET'
-        # resp['message'] = 'XmasDSL-2-JsonModel Transformation success'
-        resp['code'] = code
+        model = build_model(model_path)
+        model_json = model_to_json(model)
+        resp['message'] = 'XmasDSL-2-JsonModel Transformation success'
+        resp['model_json'] = model_json
     except Exception as e:
         print(e)
         resp['status'] = 404
@@ -196,13 +198,13 @@ async def gen_json_file(model_file: UploadFile = File(...),
     resp = {
         'status': 200,
         'message': '',
-        'code': ''
+        'model_json': ''
     }
     fd = model_file.file
     u_id = uuid.uuid4().hex[0:8]
     model_path = os.path.join(
         TMP_DIR,
-        f'model-{u_id}.auto'
+        f'model-{u_id}.xmas'
     )
     gen_path = os.path.join(
         TMP_DIR,
@@ -213,11 +215,10 @@ async def gen_json_file(model_file: UploadFile = File(...),
     with open(model_path, 'w') as f:
         f.write(fd.read().decode('utf8'))
     try:
-        ## TODO
-        code: str = ""
-        resp['message'] = 'NOT IMPLEMENTED YET'
-        # resp['message'] = 'XmasDSL-2-JsonModel Transformation success'
-        resp['code'] = code
+        model = build_model(model_path)
+        model_json = model_to_json(model)
+        resp['message'] = 'XmasDSL-2-JsonModel Transformation success'
+        resp['model_json'] = model_json
     except Exception as e:
         print(e)
         resp['status'] = 404
