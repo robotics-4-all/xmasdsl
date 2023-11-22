@@ -1,0 +1,31 @@
+Serial
+  SetBrightness(100)
+  SetPixelColor([1-10, 20-30], [0, 100, 200], 1000)
+  SetPixelColor([1-10, 20-30], [30, 100, 200], 2000)
+  Delay(100)
+  Parallel
+    Serial
+      SetBrightness(100)
+      SetPixelColor([1-10, 20-30], [0, 100, 200], 1000)
+    end
+    Serial
+      SetBrightness(100)
+      SetPixelColor([1-10, 20-30], [0, 100, 200], 1000)
+    end
+  end
+  Delay(3000)
+  Parallel
+    Serial
+      SetBrightness(100)
+      SetPixelColor([1-10, 20-30], [0, 100, 200], 1000)
+    end
+    Parallel
+      Serial
+        SetPixelColor([1-10, 20-30], [0, 100, 200], 1000)
+      end
+      Serial
+        SetPixelColor([1-10, 20-30], [0, 100, 200], 1000)
+      end
+    end
+  end
+end

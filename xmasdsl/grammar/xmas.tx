@@ -1,0 +1,86 @@
+XmasModel:
+    imports*=Import
+    (metadata=Metadata)?
+    program=Serial
+;
+
+Metadata:
+    'Metadata'
+    (
+        ('name:' name=STRING)
+        ('description:' description=STRING)?
+        ('author:' author=STRING)?
+        ('email:' email=STRING)?
+        ('token:' token=STRING)?
+    )#
+    'end'
+;
+
+Range:
+    from=INT (hasTo='-' (to=INT)?)?
+;
+
+Ranges:
+    '[' ranges*=Range[','] ']'
+;
+
+Color:
+    '[' r=INT  ',' g=INT  ',' b=INT ']'
+;
+
+
+Command:
+    SetPixelColor   |
+    Delay           |
+    SetBrightness
+;
+
+SetPixelColor:
+    'SetPixelColor' '(' pixels=Ranges ',' color=Color ',' duration=INT ')'
+;
+
+Delay:
+    'Delay' '(' duration=INT ')'
+;
+
+SetBrightness:
+    'SetBrightness' '(' value=INT ')'
+;
+
+Process:
+    Serial |
+    Parallel
+;
+
+SerCommand:
+    Command | Parallel
+;
+
+Serial:
+'Serial'
+(
+    (commands*=SerCommand)?
+)#
+'end'
+;
+
+Parallel:
+'Parallel'
+(
+    (processes*=Process)?
+)#
+'end'
+;
+
+// FQN: ID('.'ID)*;
+FQN: ID+['.'];
+FQNI: ID+['.']('.*')?;
+// Import: 'import' importURI=FQNI ('as' name=ID)?;
+NID: /(.*?)\n/;
+NIDREF: NID+['.']('.*')?;
+Import: 'import' name=STRING;
+
+// Comments
+Comment: CommentLine | CommentBlock ;
+CommentLine: /\/\/.*?$/;
+CommentBlock: /\/\*(.|\n)*?\*\//;
