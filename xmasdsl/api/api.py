@@ -161,7 +161,7 @@ async def gen_json(xmas_model: TransformationModel = Body(...),
     resp = {
         'status': 200,
         'message': '',
-        'model_json': ''
+        'code': ''
     }
     model =  xmas_model.model
     u_id = uuid.uuid4().hex[0:8]
@@ -182,7 +182,7 @@ async def gen_json(xmas_model: TransformationModel = Body(...),
         model = build_model(model_path)
         model_json = model_to_json(model)
         resp['message'] = 'XmasDSL-2-JsonModel Transformation success'
-        resp['model_json'] = model_json
+        resp['code'] = model_json
     except Exception as e:
         print(e)
         resp['status'] = 404
@@ -198,7 +198,7 @@ async def gen_json_file(model_file: UploadFile = File(...),
     resp = {
         'status': 200,
         'message': '',
-        'model_json': ''
+        'code': ''
     }
     fd = model_file.file
     u_id = uuid.uuid4().hex[0:8]
@@ -218,7 +218,7 @@ async def gen_json_file(model_file: UploadFile = File(...),
         model = build_model(model_path)
         model_json = model_to_json(model)
         resp['message'] = 'XmasDSL-2-JsonModel Transformation success'
-        resp['model_json'] = model_json
+        resp['code'] = model_json
     except Exception as e:
         print(e)
         resp['status'] = 404

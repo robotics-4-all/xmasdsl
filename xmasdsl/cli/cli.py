@@ -4,6 +4,7 @@ from rich import print, pretty
 import json
 
 from xmasdsl.language import build_model
+from xmasdsl.m2t import model_to_json
 
 pretty.install()
 
@@ -32,9 +33,10 @@ def validate(ctx, model_path):
 @click.argument('model_path')
 def generate(ctx, model_path):
     model = build_model(model_path)
-    filepath = f'xmas-{model.metadata.name}.json'
-    # with open(filepath, 'w') as fp:
-    #     json.dump(_model, fp)
+    model_json = model_to_json(model)
+    filepath = f'xmas.json'
+    with open(filepath, 'w') as fp:
+        json.dump(model_json, fp)
 
 
 def main():
