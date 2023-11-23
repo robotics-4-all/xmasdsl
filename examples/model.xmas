@@ -1,8 +1,10 @@
-Range Top [1-10]
-Color Red [255, 0, 0]
+Range Top [1:10:+1]
+Color Red [255, 255, +1]
 
 Group Fun {
-    SetBrightness(100)
+    Repeat 10 {
+        SetBrightness(+ 100)
+    }
     Parallel{
         Serial{
             SetBrightness(100)
@@ -15,13 +17,17 @@ Group Fun {
 }
 
 Program {
-    SetBrightness(100)
+    Repeat 10 {
+        SetBrightness(100)
+    }
     SetPixelColor(Top, Red, 1000)
     Delay(100)
     Fun
     Parallel{
         Serial{
-            SetBrightness(100)
+            Repeat 2 {
+                SetBrightness(100)
+            }
         }
         Fun
     }

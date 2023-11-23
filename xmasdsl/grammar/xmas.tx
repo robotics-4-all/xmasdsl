@@ -28,7 +28,7 @@ RangeDef:
 ;
 
 Range:
-    from=INT (hasTo='-' (to=INT)?)?
+    start=INT (hasEnd=':' (end=INT)?)? (hasStep=':' (step=ChangeIntBy)?)?
 ;
 
 Ranges:
@@ -36,7 +36,11 @@ Ranges:
 ;
 
 Color:
-    '[' r=INT  ',' g=INT  ',' b=INT ']'
+    '[' r=ChangeIntBy  ',' g=ChangeIntBy  ',' b=ChangeIntBy ']'
+;
+
+ChangeIntBy:
+    (changeBy=ChangeBy)? val=INT
 ;
 
 
@@ -55,11 +59,11 @@ SetPixelColor:
 ;
 
 Delay:
-    'Delay' '(' duration=INT ')'
+    'Delay' '(' duration=ChangeIntBy ')'
 ;
 
 SetBrightness:
-    'SetBrightness' '(' value=INT ')'
+    'SetBrightness' '(' value=ChangeIntBy ')'
 ;
 
 Process:
@@ -68,11 +72,16 @@ Process:
     GroupRef
 ;
 
-SerCommand:
-    Command | Parallel | GroupRef
+ChangeBy:
+    '+' |
+    '-'
 ;
 
-ProgramCommand: Command | Parallel| GroupRef;
+SerCommand:
+    Command | Parallel | Repeat | GroupRef
+;
+
+ProgramCommand: Command | Parallel | Repeat | GroupRef;
 
 Program:
 'Program' '{'
@@ -102,6 +111,14 @@ Parallel:
 'Parallel' '{'
 (
     (processes*=Process)?
+)#
+'}'
+;
+
+Repeat:
+'Repeat' times=INT '{'
+(
+    (commands*=SerCommand)?
 )#
 '}'
 ;
