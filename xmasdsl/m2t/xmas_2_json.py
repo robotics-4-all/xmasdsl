@@ -1,4 +1,5 @@
 import os
+import json
 from os.path import join
 from rich import print, pretty
 from xmasdsl.definitions import MODEL_REPO_PATH
@@ -101,8 +102,8 @@ def objectToJSON(model):
 def transform(model) -> Dict[str, Any]:
     json_model = objectToJSON(model.program)
 
-    xmas_json: Dict[str, Any] = {
+    xmas_json: Dict[str, str] = json.dumps({
         'program': json_model
-    }
+    })
 
     return xmas_json

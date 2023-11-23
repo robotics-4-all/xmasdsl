@@ -1,0 +1,135 @@
+{
+    "parallelProcess": [
+        {
+            "serialProcess": [
+                {
+                    "delay": {
+                        "durationMs": 1000
+                    }
+                },
+                {
+                    "setPixelColor": {
+                        "pixels": "0,3,6,9",
+                        "color": [
+                            255,
+                            0,
+                            0
+                        ],
+                        "brightness": 0.2,
+                        "durationMs": 1000
+                    }
+                },
+                {
+                    "delay": {
+                        "durationMs": 1000
+                    }
+                },
+                {
+                    "setPixelColor": {
+                        "pixels": "0,3,6,9",
+                        "color": [
+                            255,
+                            0,
+                            0
+                        ],
+                        "brightness": 0.2,
+                        "durationMs": 1000
+                    }
+                },
+                {
+                    "delay": {
+                        "durationMs": 1000
+                    }
+                },
+                {
+                    "setPixelColor": {
+                        "pixels": "0,3,6,9",
+                        "color": [
+                            255,
+                            0,
+                            0
+                        ],
+                        "brightness": 0.2,
+                        "durationMs": 1000
+                    }
+                },
+                {
+                    "delay": {
+                        "durationMs": 1000
+                    }
+                },
+                {
+                    "setPixelColor": {
+                        "pixels": "0,3,6,9",
+                        "color": [
+                            255,
+                            0,
+                            0
+                        ],
+                        "brightness": 0.2,
+                        "durationMs": 1000
+                    }
+                }
+            ]
+        },
+        {
+            "serialProcess": [
+                {
+                    "delay": {
+                        "durationMs": 2000
+                    }
+                },
+                {
+                    "setPixelColor": {
+                        "pixels": "1,4,7,10",
+                        "color": [
+                            255,
+                            0,
+                            0
+                        ],
+                        "brightness": 0.2,
+                        "durationMs": 2000
+                    }
+                },
+                {
+                    "delay": {
+                        "durationMs": 2000
+                    }
+                },
+                {
+                    "setPixelColor": {
+                        "pixels": "1,4,7,10",
+                        "color": [
+                            255,
+                            0,
+                            0
+                        ],
+                        "brightness": 0.2,
+                        "durationMs": 2000
+                    }
+                }
+            ]
+        },
+        {
+            "serialProcess": [
+                {
+                    "delay": {
+                        "durationMs": 4000
+                    }
+                },
+                {
+                    "setPixelColor": {
+                        "pixels": "2,5,8,11-200",
+                        "color": [
+                            255,
+                            0,
+                            0
+                        ],
+                        "brightness": 0.2,
+                        "durationMs": 4000
+                    }
+                }
+            ]
+        }
+    ]
+}
