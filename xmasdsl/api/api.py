@@ -5,6 +5,7 @@ import subprocess
 import shutil
 import tarfile
 from pydantic import BaseModel
+import json
 
 from fastapi import (
     FastAPI, File, UploadFile, status, HTTPException, Security, Body
@@ -182,7 +183,7 @@ async def gen_json(xmas_model: TransformationModel = Body(...),
         model = build_model(model_path)
         model_json = model_to_json(model)
         resp['message'] = 'XmasDSL-2-JsonModel Transformation success'
-        resp['code'] = model_json
+        resp['code'] = json.dumps(model_json)
     except Exception as e:
         print(e)
         resp['status'] = 404
@@ -198,7 +199,7 @@ async def gen_json_file(model_file: UploadFile = File(...),
     resp = {
         'status': 200,
         'message': '',
-        'code': ''
+        'code': {}
     }
     fd = model_file.file
     u_id = uuid.uuid4().hex[0:8]
