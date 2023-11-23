@@ -1,7 +1,10 @@
 XmasModel:
     imports*=Import
     (metadata=Metadata)?
-    program=Serial
+    (rangeDefs*=RangeDef)?
+    (colorDefs*=ColorDef)?
+    (groupDefs*=CommandGroup)?
+    program=Program
 ;
 
 Metadata:
@@ -14,6 +17,14 @@ Metadata:
         ('token:' token=STRING)?
     )#
     'end'
+;
+
+ColorDef:
+    'Color' name=ID color=Color
+;
+
+RangeDef:
+    'Range' name=ID range=Ranges
 ;
 
 Range:
@@ -35,8 +46,12 @@ Command:
     SetBrightness
 ;
 
+GroupRef:
+    ref=[CommandGroup]
+;
+
 SetPixelColor:
-    'SetPixelColor' '(' pixels=Ranges ',' color=Color ',' duration=INT ')'
+    'SetPixelColor' '(' pixels=[RangeDef] ',' color=[ColorDef] ',' duration=INT ')'
 ;
 
 Delay:
@@ -48,28 +63,47 @@ SetBrightness:
 ;
 
 Process:
-    Serial |
-    Parallel
+    Serial          |
+    Parallel        |
+    GroupRef
 ;
 
 SerCommand:
-    Command | Parallel
+    Command | Parallel | GroupRef
+;
+
+ProgramCommand: Command | Parallel| GroupRef;
+
+Program:
+'Program' '{'
+(
+    (commands*=ProgramCommand)?
+)#
+'}'
 ;
 
 Serial:
-'Serial'
+'Serial' '{'
 (
     (commands*=SerCommand)?
 )#
-'end'
+'}'
+;
+
+CommandGroup:
+'Group' name=ID '{'
+(
+    (commands*=SerCommand)?
+)#
+'}'
 ;
 
 Parallel:
-'Parallel'
+'Parallel' '{'
 (
     (processes*=Process)?
 )#
-'end'
+'}'
 ;
 
 // FQN: ID('.'ID)*;

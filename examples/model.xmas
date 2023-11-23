@@ -1,31 +1,28 @@
-Serial
-  SetBrightness(100)
-  SetPixelColor([1-10, 20-30], [0, 100, 200], 1000)
-  SetPixelColor([1-10, 20-30], [30, 100, 200], 2000)
-  Delay(100)
-  Parallel
-    Serial
-      SetBrightness(100)
-      SetPixelColor([1-10, 20-30], [0, 100, 200], 1000)
-    end
-    Serial
-      SetBrightness(100)
-      SetPixelColor([1-10, 20-30], [0, 100, 200], 1000)
-    end
-  end
-  Delay(3000)
-  Parallel
-    Serial
-      SetBrightness(100)
-      SetPixelColor([1-10, 20-30], [0, 100, 200], 1000)
-    end
-    Parallel
-      Serial
-        SetPixelColor([1-10, 20-30], [0, 100, 200], 1000)
-      end
-      Serial
-        SetPixelColor([1-10, 20-30], [0, 100, 200], 1000)
-      end
-    end
-  end
-end
+Range Top [1-10]
+Color Red [255, 0, 0]
+
+Group Fun {
+    SetBrightness(100)
+    Parallel{
+        Serial{
+            SetBrightness(100)
+        }
+        Serial{
+            SetBrightness(100)
+        }
+        Fun
+    }
+}
+
+Program {
+    SetBrightness(100)
+    SetPixelColor(Top, Red, 1000)
+    Delay(100)
+    Fun
+    Parallel{
+        Serial{
+            SetBrightness(100)
+        }
+        Fun
+    }
+}
