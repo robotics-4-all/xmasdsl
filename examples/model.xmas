@@ -20,6 +20,7 @@ Program {
         SetBrightness(100)
     }
     SetPixelColor(Top, Red, 1000)
+    Dim(Top, 10, 100, 1000)
     Delay(100)
     Fun
     Parallel{

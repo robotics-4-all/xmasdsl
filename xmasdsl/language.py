@@ -8,12 +8,28 @@ from textx.scoping import ModelRepository, GlobalModelRepository
 from xmasdsl.definitions import MODEL_REPO_PATH
 from typing import Any, Dict, List, Optional
 from pydantic import BaseModel
+from textx import get_location, TextXSemanticError
 
 pretty.install()
 
 CURRENT_FPATH = pathlib.Path(__file__).parent.resolve()
 
 GLOBAL_REPO = GlobalModelRepository()
+
+def raise_validation_error(obj, msg):
+    raise TextXSemanticError(
+        f'[Validation Error]: {msg}',
+        **get_location(obj)
+    )
+
+
+def model_proc(model, metamodel):
+    pass
+    # raise_validation_error(
+    #     LANDUAGE_COMPONENT,
+    #     f'Board {c.board.name} does not have a pin '
+    #     f'named {pin_conn.boardPin}'
+    # )
 
 
 def get_metamodel(debug=False) -> Any:
@@ -29,6 +45,11 @@ def get_metamodel(debug=False) -> Any:
             "*.*": scoping_providers.FQNImportURI(importAs=True),
         }
     )
+    metamodel.register_model_processor(model_proc)
+
+    metamodel.register_obj_processors({
+        # EMPTY
+    })
     return metamodel
 
 

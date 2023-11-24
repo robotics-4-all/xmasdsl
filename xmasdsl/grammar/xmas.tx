@@ -46,6 +46,7 @@ ChangeIntBy:
 
 Command:
     SetPixelColor   |
+    Dim				|
     Delay           |
     SetBrightness
 ;
@@ -56,6 +57,10 @@ GroupRef:
 
 SetPixelColor:
     'SetPixelColor' '(' pixels=[RangeDef] ',' color=[ColorDef] ',' duration=INT ')'
+;
+
+Dim:
+    'Dim' '(' range=[RangeDef] ',' brStart=INT ',' brEnd=INT ',' duration=INT ')'
 ;
 
 Delay:
