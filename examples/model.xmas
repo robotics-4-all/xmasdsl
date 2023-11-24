@@ -1,5 +1,10 @@
-Range Top [1:10:+1]
+RandomRange Rand1 ([1:100], 50)
 Color Red [255, 255, +1]
+Color Green [0, 255, 0]
+Color Blue [0, 0, 255]
+Range Offets [10, 15, 10]
+Range Leds3 [1, 5, 10]
+Range Top [1:10:+1, 1:10:+1, 1:10:+1]
 
 Group Fun {
     Repeat 10 {
@@ -19,14 +24,22 @@ Program {
     Repeat 10 {
         SetBrightness(100)
     }
-    SetPixelColor(Top, Red, 1000)
-    Dim(Top, 10, 100, 1000)
+    SetPixelColor(Top, Red, 1000, true)
+    
+	Dim(Top, 10, 100, 1000)
+	ColorTransition(Top, Red, Green, 1000)
+	ColorTransition([1:10], Red, Green, 1000)
+	Linear(Leds3, Offets, Red, Green, 1000, true)
+	Linear([1, 10, 20], [1, 10, 20], Red, Green, 1000, true)
     Delay(100)
     Fun
     Parallel{
         Serial{
             Repeat 2 {
-                SetBrightness(100)
+				SetBrightness(100)
+                SetBrightness(100, Top)
+				SetBrightness(100, [1, 2, 3])
+				//SetBrightness(100, Rand1)
             }
         }
         Fun
