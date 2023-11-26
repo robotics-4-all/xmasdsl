@@ -1,10 +1,13 @@
 XmasModel:
     imports*=Import
-    (metadata=Metadata)?
-    (rangeDefs*=RangeDef)?
-    (colorDefs*=ColorDef)?
-    (groupDefs*=CommandGroup)?
-    program=Program
+	(
+		(metadata=Metadata)?
+		(randomRangeDefs*=RandomRangeDef)
+		(rangeDefs*=RangeDef)
+		(colorDefs*=ColorDef)
+		(groupDefs*=CommandGroup)
+		(program=Program)
+	)#
 ;
 
 Metadata:
@@ -27,12 +30,20 @@ RangeDef:
     'Range' name=ID range=Ranges
 ;
 
+RandomRangeDef:
+    'RandomRange' name=ID '([' range=Range '],' percentage=INT ')'
+;
+
 Range:
     start=INT (hasEnd=':' (end=INT)?)? (hasStep=':' (step=ChangeIntBy)?)?
 ;
 
 Ranges:
     '[' ranges*=Range[','] ']'
+;
+
+RangeType:
+    RangeDef | Ranges
 ;
 
 Color:
@@ -47,6 +58,8 @@ ChangeIntBy:
 Command:
     SetPixelColor   |
     Dim				|
+	ColorTransition |
+	Linear			|
     Delay           |
     SetBrightness
 ;
@@ -56,11 +69,19 @@ GroupRef:
 ;
 
 SetPixelColor:
-    'SetPixelColor' '(' pixels=[RangeDef] ',' color=[ColorDef] ',' duration=INT ')'
+    'SetPixelColor' '(' (rangeDef=[RangeDef] | range=Ranges | randRange=[RandomRangeDef]) ',' color=[ColorDef] ',' duration=INT ',' maintain=BOOL ')'
 ;
 
 Dim:
-    'Dim' '(' range=[RangeDef] ',' brStart=INT ',' brEnd=INT ',' duration=INT ')'
+    'Dim' '(' (rangeDef=[RangeDef] | range=Ranges | randRange=[RandomRangeDef]) ',' brStart=INT ',' brEnd=INT ',' duration=INT ')'
+;
+
+ColorTransition:
+    'ColorTransition' '(' (rangeDef=[RangeDef] | range=Ranges | randRange=[RandomRangeDef]) ',' colorStart=[ColorDef] ',' colorEnd=[ColorDef] ',' duration=INT ')'
+;
+
+Linear:
+    'Linear' '(' (rangeDef=[RangeDef] | range=Ranges | randRange=[RandomRangeDef]) ',' ((offsetDef=[RangeDef]) | (offset=Ranges)) ',' colorStart=[ColorDef] ',' colorEnd=[ColorDef] ',' duration=INT ',' maintain=BOOL ')'
 ;
 
 Delay:
@@ -68,7 +89,7 @@ Delay:
 ;
 
 SetBrightness:
-    'SetBrightness' '(' value=ChangeIntBy ')'
+    'SetBrightness' '(' value=ChangeIntBy (',' ((rangeDef=[RangeDef]) | (range=Ranges) | (randRange=[RandomRangeDef])) )? ')'
 ;
 
 Process:

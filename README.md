@@ -8,6 +8,10 @@ We suggest you create a Python venv.
 ```bash
 python -m venv venv && source ./venv/bin/activate
 ```
+or for windows
+```
+source ./venv/Scripts/activate
+```
 
 Install the DSL in development mode to track changes automatically:
 
