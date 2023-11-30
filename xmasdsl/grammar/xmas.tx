@@ -69,7 +69,7 @@ GroupRef:
 ;
 
 SetPixelColor:
-    'SetPixelColor' '(' (rangeDef=[RangeDef] | range=Ranges | randRange=[RandomRangeDef]) ',' color=[ColorDef] ',' duration=INT ',' maintain=BOOL ')'
+    'SetPixelColor' '(' (rangeDef=[RangeDef] | range=Ranges | randRange=[RandomRangeDef]) ',' color=[ColorDef] ',' duration=INT (',' maintain=BOOL)? ')'
 ;
 
 Dim:
