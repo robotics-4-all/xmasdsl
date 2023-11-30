@@ -5,6 +5,7 @@ XmasModel:
 	(
 		(metadata=Metadata)?
 		(randomRangeDefs*=RandomRangeDef)
+		(randomColorDefs*=RandomColorDef)
 		(rangeDefs*=RangeDef)
 		(colorDefs*=ColorDef)
 		(groupDefs*=CommandGroup)
@@ -24,8 +25,26 @@ Metadata:
     'end'
 ;
 
+Color:
+    '[' r=ChangeIntBy  ',' g=ChangeIntBy  ',' b=ChangeIntBy ']'
+;
+
 ColorDef:
     'Color' name=ID color=Color
+;
+
+CDef:
+    ColorDef |
+    RandomColorDef
+;
+
+ColorArgument:
+    (colorDef=[CDef:FQN] | color=Color)
+;
+
+
+RandomColorDef:
+    'RandomColor' name=ID '(' colorA=ColorArgument ',' colorB=ColorArgument ')'
 ;
 
 RangeDef:
@@ -48,10 +67,6 @@ RangeType:
     RangeDef | Ranges
 ;
 
-Color:
-    '[' r=ChangeIntBy  ',' g=ChangeIntBy  ',' b=ChangeIntBy ']'
-;
-
 ChangeIntBy:
     (changeBy=ChangeBy)? val=INT
 ;
@@ -70,14 +85,19 @@ GroupRef:
     ref=[CommandGroup]
 ;
 
+RDef:
+    RangeDef |
+    RandomRangeDef
+;
+
 
 RangeArgument:
-    (rangeDef=[RangeDef:FQN] | range=Ranges | randRange=[RandomRangeDef:FQN])
+    (rangeDef=[RDef:FQN] | range=Ranges)
 ;
 
 
 SetPixelColor:
-    'SetPixelColor' '(' (range=RangeArgument) ',' color=[ColorDef] ','
+    'SetPixelColor' '(' (range=RangeArgument) ',' color=ColorArgument ','
         duration=INT (',' maintain=BOOL)? ')'
 ;
 
@@ -87,13 +107,13 @@ Dim:
 ;
 
 ColorTransition:
-    'ColorTransition' '(' (range=RangeArgument) ',' colorStart=[ColorDef] ','
-        colorEnd=[ColorDef] ',' duration=INT ')'
+    'ColorTransition' '(' (range=RangeArgument) ',' colorStart=ColorArgument ','
+        colorEnd=ColorArgument ',' duration=INT ')'
 ;
 
 Linear:
     'Linear' '(' (range=RangeArgument) ',' (offset=RangeArgument) ','
-        colorStart=[ColorDef] ',' colorEnd=[ColorDef] ',' duration=INT ','
+        colorStart=ColorArgument ',' colorEnd=ColorArgument ',' duration=INT ','
         maintain=BOOL ')'
 ;
 
@@ -102,7 +122,7 @@ Delay:
 ;
 
 SetBrightness:
-    'SetBrightness' '(' value=ChangeIntBy (',' range=RangeArgument)? ')'
+    'SetBrightness' '(' value=ChangeIntBy (',' (range=RangeArgument))? ')'
 ;
 
 Process:
