@@ -1,3 +1,5 @@
+import common
+
 XmasModel:
     imports*=Import
 	(
@@ -68,20 +70,31 @@ GroupRef:
     ref=[CommandGroup]
 ;
 
+
+RangeArgument:
+    (rangeDef=[RangeDef:FQN] | range=Ranges | randRange=[RandomRangeDef:FQN])
+;
+
+
 SetPixelColor:
-    'SetPixelColor' '(' (rangeDef=[RangeDef] | range=Ranges | randRange=[RandomRangeDef]) ',' color=[ColorDef] ',' duration=INT (',' maintain=BOOL)? ')'
+    'SetPixelColor' '(' (range=RangeArgument) ',' color=[ColorDef] ','
+        duration=INT (',' maintain=BOOL)? ')'
 ;
 
 Dim:
-    'Dim' '(' (rangeDef=[RangeDef] | range=Ranges | randRange=[RandomRangeDef]) ',' brStart=INT ',' brEnd=INT ',' duration=INT ')'
+    'Dim' '(' (range=RangeArgument) ',' brStart=INT ',' brEnd=INT ','
+        duration=INT ')'
 ;
 
 ColorTransition:
-    'ColorTransition' '(' (rangeDef=[RangeDef] | range=Ranges | randRange=[RandomRangeDef]) ',' colorStart=[ColorDef] ',' colorEnd=[ColorDef] ',' duration=INT ')'
+    'ColorTransition' '(' (range=RangeArgument) ',' colorStart=[ColorDef] ','
+        colorEnd=[ColorDef] ',' duration=INT ')'
 ;
 
 Linear:
-    'Linear' '(' (rangeDef=[RangeDef] | range=Ranges | randRange=[RandomRangeDef]) ',' ((offsetDef=[RangeDef]) | (offset=Ranges)) ',' colorStart=[ColorDef] ',' colorEnd=[ColorDef] ',' duration=INT ',' maintain=BOOL ')'
+    'Linear' '(' (range=RangeArgument) ',' (offset=RangeArgument) ','
+        colorStart=[ColorDef] ',' colorEnd=[ColorDef] ',' duration=INT ','
+        maintain=BOOL ')'
 ;
 
 Delay:
@@ -89,7 +102,7 @@ Delay:
 ;
 
 SetBrightness:
-    'SetBrightness' '(' value=ChangeIntBy (',' ((rangeDef=[RangeDef]) | (range=Ranges) | (randRange=[RandomRangeDef])) )? ')'
+    'SetBrightness' '(' value=ChangeIntBy (',' range=RangeArgument)? ')'
 ;
 
 Process:
@@ -148,16 +161,3 @@ Repeat:
 )#
 '}'
 ;
-
-// FQN: ID('.'ID)*;
-FQN: ID+['.'];
-FQNI: ID+['.']('.*')?;
-// Import: 'import' importURI=FQNI ('as' name=ID)?;
-NID: /(.*?)\n/;
-NIDREF: NID+['.']('.*')?;
-Import: 'import' name=STRING;
-
-// Comments
-Comment: CommentLine | CommentBlock ;
-CommentLine: /\/\/.*?$/;
-CommentBlock: /\/\*(.|\n)*?\*\//;

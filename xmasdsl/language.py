@@ -43,6 +43,7 @@ def get_metamodel(debug=False) -> Any:
     metamodel.register_scope_providers(
         {
             "*.*": scoping_providers.FQNImportURI(importAs=True),
+            "*.*": scoping_providers.FQN(),
         }
     )
     metamodel.register_model_processor(model_proc)
