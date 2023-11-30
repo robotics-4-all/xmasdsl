@@ -1,5 +1,5 @@
 
-![ScreenShot](/images/logo.png)
+![ScreenShot](https://media.discordapp.net/attachments/1176508348372369408/1176510791151796404/Screenshot_2023-11-21_at_15.13.45.png)
 
 # Description
 A textual DSL that allows manipulation of a led strip, placed on a wall or Christmass tree! The available commands and examples can be seen below:
@@ -8,9 +8,9 @@ A textual DSL that allows manipulation of a led strip, placed on a wall or Chris
 
 ## 1. Color
 ```
-Color MyColor [RedValue , GreenValue, BlueValue]  // values from 0 to 255
+Color MyColor [RedValue, GreenValue, BlueValue]  // values from 0 to 255
 ```
-Example:
+<b>Example:</b>
 ```
 Color Blue [0, 0, 255]
 ```
@@ -19,7 +19,7 @@ Color Blue [0, 0, 255]
 ```
 Range MyRange [startIndex : stopIndex : increment]  
 ```
-Example:
+<b>Example:</b>
 ```
 Range BottomHalf [0:140:1]
 ```
@@ -27,27 +27,42 @@ Range BottomHalf [0:140:1]
 ## 3. RandomRange // TODO
 
 # Blocks
-## 1. Serial
+
+## 1. Program
+This is the most outer block. All other blocks (apart from [Group](/#Group)) exist inside this one. Each block opens with ```{``` and ends with ```}```  
+<b>Example:</b>
 ```
-Color MyColor [RedValue , GreenValue, BlueValue]  // values from 0 to 255
-```
-Example:
-```
-Color Blue [0, 0, 255]
+Program {
+  ...other blocks
+}
 ```
 
-## 2. Parallel
+## 2. Serial
+All the commands in the block will execute one after the other.  
+<b>Example:</b>
 ```
-Range MyRange [startIndex : stopIndex : increment]  
-```
-Example:
-```
-Range BottomHalf [0:140:1]
+Program {
+	Serial {
+  		...other blocks
+	}
+}
 ```
 
-## 3. Group // TODO
+Note: by default the Program block executes the inside blocks serially.
 
-## 4. Program // TODO
+## 3. Parallel
+All the commands in the block will execute one after the other.  
+<b>Example:</b>
+```
+Program {
+	Serial {
+  		...other blocks
+	}
+}
+```
+
+
+## 4. Group // TODO
 
 ## 5. Repeat // TODO
 
