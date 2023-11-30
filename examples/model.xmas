@@ -24,7 +24,10 @@ Program {
     Repeat 10 {
         SetBrightness(100)
     }
+	
+	SetPixelColor(Top, Red, 1000)
     SetPixelColor(Top, Red, 1000, true)
+	SetPixelColor(Top, Red, 1000, false)
     
 	Dim(Top, 10, 100, 1000)
 	ColorTransition(Top, Red, Green, 1000)
