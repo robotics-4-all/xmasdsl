@@ -112,7 +112,7 @@ ColorTransition:
 ;
 
 Linear:
-    'Linear' '(' (range=RangeArgument) ',' (offset=RangeArgument) ','
+    'Linear' '(' (rangeStart=RangeArgument) ',' (rangeEnd=RangeArgument) ','
         colorStart=ColorArgument ',' colorEnd=ColorArgument ',' duration=INT ','
         maintain=BOOL ')'
 ;
