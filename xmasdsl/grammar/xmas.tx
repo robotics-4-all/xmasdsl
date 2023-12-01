@@ -75,7 +75,7 @@ ChangeIntBy:
 Command:
     SetPixelColor   |
     Dim				|
-	ColorTransition |
+	Rainbow			|
 	Linear			|
     Delay           |
     SetBrightness
@@ -102,19 +102,19 @@ SetPixelColor:
 ;
 
 Dim:
-    'Dim' '(' (range=RangeArgument) ',' brStart=INT ',' brEnd=INT ','
-        duration=INT ')'
+    'Dim' '(' (range=RangeArgument) ',' (color=ColorArgument) ',' duration=INT
+		(',' fadeIn=BOOL)? ')'
 ;
 
-ColorTransition:
-    'ColorTransition' '(' (range=RangeArgument) ',' colorStart=ColorArgument ','
-        colorEnd=ColorArgument ',' duration=INT ')'
+Rainbow:
+    'Rainbow' '(' (range=RangeArgument) ',' colorStart=ColorArgument ','
+        colorEnd=ColorArgument ',' duration=INT (',' maintain=BOOL)? ')'
 ;
 
 Linear:
     'Linear' '(' (rangeStart=RangeArgument) ',' (rangeEnd=RangeArgument) ','
-        colorStart=ColorArgument ',' colorEnd=ColorArgument ',' duration=INT ','
-        maintain=BOOL ')'
+        colorStart=ColorArgument ',' colorEnd=ColorArgument ',' duration=INT
+		(',' maintain=BOOL)? ')'
 ;
 
 Delay:
