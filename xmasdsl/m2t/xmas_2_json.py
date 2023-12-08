@@ -85,36 +85,51 @@ def _parseRanges(object):
 
 def objectToJSON(model):
     if _is(model) == "Serial" or _is(model) == "Program":
+        total_duration = 0
         serial_commands = []
-
         for cmd in model.commands:
-            serial_commands.append(objectToJSON(cmd))
+            sub_json, sub_duration = objectToJSON(cmd)
 
-        return {"serialProcess": serial_commands}
+            serial_commands.append(sub_json)
+            total_duration += sub_duration
+
+        return {"serialProcess": serial_commands}, total_duration
 
     elif _is(model) == "Parallel":
+        parallel_durations = []
         parallel_processes = []
 
         for cmd in model.processes:
-            parallel_processes.append(objectToJSON(cmd))
+            sub_json, sub_duration = objectToJSON(cmd)
 
-        return {"parallelProcess": parallel_processes}
+            parallel_processes.append(sub_json)
+            parallel_durations.append[sub_duration]
+
+        return {"parallelProcess": parallel_processes}, max(parallel_durations)
 
     elif _is(model) == "Repeat":
+        total_duration = 0
         serial_repeat = []
 
         for cmd in model.commands:
-            serial_repeat.append(objectToJSON(cmd))
+            sub_json, sub_duration = objectToJSON(cmd)
 
-        return {"repeat": {"times": model.times, "serialProcess": serial_repeat}}
+            serial_repeat.append(sub_json)
+            total_duration += sub_duration
+
+        return {"repeat": {"times": model.times, "serialProcess": serial_repeat}}, total_duration
 
     elif _is(model) == "GroupRef":
+        total_duration = 0
         group_commands = []
 
         for cmd in model.ref.commands:
-            group_commands.append(objectToJSON(cmd))
+            sub_json, sub_duration = objectToJSON(cmd)
 
-        return {"serialProcess": group_commands}
+            group_commands.append(sub_json)
+            total_duration += sub_duration
+
+        return {"serialProcess": group_commands}, total_duration
 
     elif _is(model) == "SetBrightness":
         return {
@@ -128,7 +143,7 @@ def objectToJSON(model):
             "delay": {
                 "duration": _parseChangedBy(model.duration)
             }
-        }
+        }, int(model.duration)
     elif _is(model) == "SetPixelColor":
         return {
             "setPixelColor": {
@@ -137,7 +152,7 @@ def objectToJSON(model):
                 "duration": model.duration,
                 "maintain": model.maintain
             }
-        }
+        }, int(model.duration)
     elif _is(model) == "Dim":
         return {
             "dim": {
@@ -146,7 +161,7 @@ def objectToJSON(model):
                 "duration": model.duration,
                 "fadeIn": model.fadeIn
             }
-        }
+        }, int(model.duration)
     elif _is(model) == "Rainbow":
         return {
             "rainbow": {
@@ -156,7 +171,7 @@ def objectToJSON(model):
                 "duration": model.duration,
                 "maintain": model.maintain
             }
-        }
+        }, int(model.duration)
 
     elif _is(model) == "Linear":
         return {
@@ -168,18 +183,19 @@ def objectToJSON(model):
                 "duration": model.duration,
                 "maintain": model.maintain
             }
-        }
+        }, int(model.duration)
     else:
         pass
 
 
 def transform(model) -> Dict[str, Any]:
-    json_model = objectToJSON(model.program)
+    json_model, duration = objectToJSON(model.program)
 
-    print(json_model)
+    print("Total duration is:", duration)
 
     xmas_json: Dict[str, str] = json.dumps({
-        'program': json_model
+        'program': json_model,
+        "duration": duration
     })
 
     return xmas_json
