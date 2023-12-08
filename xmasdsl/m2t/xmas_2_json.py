@@ -136,14 +136,14 @@ def objectToJSON(model):
             "setBrightness": {
                 "value": _parseChangedBy(model.value)
             }
-        }
-
+        }, 0
     elif _is(model) == "Delay":
         return {
             "delay": {
                 "duration": _parseChangedBy(model.duration)
             }
-        }, int(model.duration)
+        }, int(model.duration.val)
+
     elif _is(model) == "SetPixelColor":
         return {
             "setPixelColor": {
@@ -153,6 +153,7 @@ def objectToJSON(model):
                 "maintain": model.maintain
             }
         }, int(model.duration)
+
     elif _is(model) == "Dim":
         return {
             "dim": {
@@ -162,6 +163,7 @@ def objectToJSON(model):
                 "fadeIn": model.fadeIn
             }
         }, int(model.duration)
+
     elif _is(model) == "Rainbow":
         return {
             "rainbow": {
@@ -185,7 +187,7 @@ def objectToJSON(model):
             }
         }, int(model.duration)
     else:
-        pass
+        return {}, 0
 
 
 def transform(model) -> Dict[str, Any]:
