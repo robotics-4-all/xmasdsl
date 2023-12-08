@@ -1,0 +1,70 @@
+Range TopHalf [140:270:1]
+Range BotHalf [1:140:1]
+Range Part1 [1:84:1]
+Range Part2 [84:178:1]
+Range Part3 [178:300:1]
+
+Range Part01 [1:44:1]
+Range Part02 [44:84:1]
+Color Green [255, 255, 0]
+Color Red [0, 255, 0]
+Color Blue [0, 0, 255]
+
+
+
+Group Light1 {
+  Parallel {
+    Serial{
+      Parallel {
+        Serial {
+          SetPixelColor(Part01, Blue, 200)
+        }
+        Serial {
+          SetPixelColor(Part02, Red, 200)
+        }
+      }
+    }
+    Serial{
+      SetPixelColor(Part2, Blue, 200)
+    }
+    Serial{
+      SetPixelColor(Part3, Green, 200)
+    }
+  }
+}
+
+Group Light2 {
+  Parallel {
+    Serial{
+      SetPixelColor(Part1, Green, 200)
+    }
+    Serial{
+      SetPixelColor(Part2, Red, 200)
+    }
+    Serial{
+      SetPixelColor(Part3, Blue, 200)
+    }
+  }
+}
+
+Group Light3 {
+  Parallel {
+    Serial{
+      SetPixelColor(Part1, Blue, 200)
+    }
+    Serial{
+      SetPixelColor(Part2, Green, 200)
+    }
+    Serial{
+      SetPixelColor(Part3, Red, 200)
+    }
+  }
+}
+
+Program {
+  Repeat 30 {
+    Light1
+    Light2
+    Light3
+  }
+}

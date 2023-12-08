@@ -103,7 +103,7 @@ def objectToJSON(model):
             sub_json, sub_duration = objectToJSON(cmd)
 
             parallel_processes.append(sub_json)
-            parallel_durations.append[sub_duration]
+            parallel_durations.append(sub_duration)
 
         return {"parallelProcess": parallel_processes}, max(parallel_durations)
 
@@ -117,7 +117,7 @@ def objectToJSON(model):
             serial_repeat.append(sub_json)
             total_duration += sub_duration
 
-        return {"repeat": {"times": model.times, "serialProcess": serial_repeat}}, total_duration
+        return {"repeat": {"times": model.times, "serialProcess": serial_repeat}}, (total_duration * int(model.times))
 
     elif _is(model) == "GroupRef":
         total_duration = 0
