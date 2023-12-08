@@ -130,7 +130,6 @@ def objectToJSON(model):
             }
         }
     elif _is(model) == "SetPixelColor":
-        print(model.__dict__.keys())
         return {
             "setPixelColor": {
                 "range": _parseRanges(model.range),
@@ -140,19 +139,15 @@ def objectToJSON(model):
             }
         }
     elif _is(model) == "Dim":
-        # print(">> DIM")
-        print(model.__dict__.keys())
-        # print(model.fadeIn)
         return {
             "dim": {
                 "range": _parseRanges(model.range),
                 "color": _parseColor(model.color),
+                "duration": model.duration,
                 "fadeIn": model.fadeIn
             }
         }
     elif _is(model) == "Rainbow":
-        # print(">> Rainbow")
-        print(model.__dict__.keys())
         return {
             "rainbow": {
                 "range": _parseRanges(model.range),
@@ -164,8 +159,6 @@ def objectToJSON(model):
         }
 
     elif _is(model) == "Linear":
-        print(">> Linear")
-        print(model.__dict__.keys())
         return {
             "linear": {
                 "rangeStart": _parseRanges(model.rangeStart),
