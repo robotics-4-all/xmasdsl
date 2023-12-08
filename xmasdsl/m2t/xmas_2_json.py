@@ -8,9 +8,15 @@ from pydantic import BaseModel
 
 pretty.install()
 
+MAX_PERCENTAGE = 100
+
 
 def _is(object):
     return object.__class__.__name__
+
+
+def _has(object, key):
+    return (key in object.__dict__.keys())
 
 
 def _parseChangedBy(object):
@@ -20,12 +26,33 @@ def _parseChangedBy(object):
     return object.val
 
 
+def _parseArgument(object):
+    if object.color != None:
+        return [
+            str(_parseChangedBy(object.color.r)),
+            str(_parseChangedBy(object.color.g)),
+            str(_parseChangedBy(object.color.b))
+        ]
+    elif object.colorDef != None:
+        return [
+            str(_parseChangedBy(object.colorDef.color.r)),
+            str(_parseChangedBy(object.colorDef.color.g)),
+            str(_parseChangedBy(object.colorDef.color.b))
+        ]
+
+
 def _parseColor(object):
-    return [
-        str(_parseChangedBy(object.color.r)),
-        str(_parseChangedBy(object.color.g)),
-        str(_parseChangedBy(object.color.b))
-    ]
+    if object.colorDef != None and _has(object.colorDef, "colorA") and _has(object.colorDef, "colorB"):
+        return {
+            "colorA": _parseArgument(object.colorDef.colorA),
+            "colorB": _parseArgument(object.colorDef.colorB)
+        }
+    
+    else:
+        return {
+            "colorA": _parseArgument(object),
+            "colorB": []
+        }
 
 
 def _parseRange(object):
@@ -37,8 +64,23 @@ def _parseRange(object):
         return f"{object.start}"
 
 
-def _parsePixels(object):
-    return ",".join([_parseRange(r) for r in object.range.ranges])
+def _parseRanges(object):
+    pixels = None
+    percentage = 100
+
+    if object.range != None:
+        pixels = ",".join([_parseRange(r) for r in object.range.ranges])
+    elif _has(object.rangeDef, "percentage"):
+        pixels = _parseRange(object.rangeDef.range)
+        percentage = object.rangeDef.percentage
+    else:
+        pixels = ",".join([_parseRange(r)
+                          for r in object.rangeDef.range.ranges])
+
+    return {
+        "pixels": pixels,
+        "percentage": min(percentage, MAX_PERCENTAGE)
+    }
 
 
 def objectToJSON(model):
@@ -88,11 +130,13 @@ def objectToJSON(model):
             }
         }
     elif _is(model) == "SetPixelColor":
+        print(model.__dict__.keys())
         return {
             "setPixelColor": {
-                "pixels": _parsePixels(model.pixels),
+                "range": _parseRanges(model.range),
                 "color": _parseColor(model.color),
-                "duration": model.duration
+                "duration": model.duration,
+                "maintain": model.maintain
             }
         }
     else:
@@ -101,6 +145,8 @@ def objectToJSON(model):
 
 def transform(model) -> Dict[str, Any]:
     json_model = objectToJSON(model.program)
+
+    print(json_model)
 
     xmas_json: Dict[str, str] = json.dumps({
         'program': json_model

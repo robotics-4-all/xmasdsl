@@ -42,9 +42,12 @@ ColorArgument:
     (colorDef=[CDef:FQN] | color=Color)
 ;
 
+RandomColorArgument:
+    (colorDef=[ColorDef] | color=Color)
+;
 
 RandomColorDef:
-    'RandomColor' name=ID '(' colorA=ColorArgument ',' colorB=ColorArgument ')'
+    'RandomColor' name=ID '(' colorA=RandomColorArgument ',' colorB=RandomColorArgument ')'
 ;
 
 RangeDef:

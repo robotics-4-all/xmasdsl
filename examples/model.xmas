@@ -1,56 +1,30 @@
-RandomRange Rand1 ([1:100], 50)
-RandomColor RC1 (Red, Blue)
-RandomColor RC2 ([0,0,0], [100,100,100])
+RandomRange Rand1 ([1:100:2], 120)
+Range Top [1:10:1]
 
-Color Red [255, 255, +1]
-Color Green [0, 255, 0]
+Color Red [255, 0, 0]
 Color Blue [0, 0, 255]
-Range Offets [10, 15, 10]
-Range Leds3 [1, 5, 10]
-Range Top [1:10:+1, 1:10:+1, 1:10:+1]
 
-Group Fun {
-    Repeat 10 {
-        SetBrightness(+ 100)
-    }
-    Parallel{
-        Serial{
-            SetBrightness(100)
-        }
-        Serial{
-            SetBrightness(100)
-        }
-    }
-}
+RandomColor RC1 (Red, Blue)
+RandomColor RC2 ([0,0,0], [100, 100, 100])
+RandomColor RC3 ([0,0,0], Blue)
 
 Program {
-    Repeat 10 {
-        SetBrightness(100)
-    }
-
     SetPixelColor(Top, Red, 1000)
-    SetPixelColor(Top, Red, 1000, true)
-    //SetPixelColor(Top, Red, 1000, false)
+    SetPixelColor(Top, Red, 1000, True)
 
-    Dim(Top, Red, 1000, true)
-    Dim(Top, Red, 1000)
-    Rainbow(Top, Red, Green, 1000)
-    Rainbow([1:10], Red, Green, 1000)
-    Linear(Leds3, Offets, Red, Green, 1000)
-    Linear(Leds3, Offets, Red, Green, 1000, true)
-    Linear([1, 10, 20], [1, 10, 20], Red, Green, 1000, true)
-    Delay(100)
-    Fun
-    Parallel{
-        Serial{
-            Repeat 2 {
-		SetBrightness(100)
-                SetBrightness(100, Top)
-		SetBrightness(100, [1, 2, 3])
-		SetBrightness(100, Rand1)
-                Rainbow([1:10], RC1, RC2, 1000)
-            }
-        }
-        Fun
-    }
+    SetPixelColor(Top, [255, 255, 0], 1000)
+    SetPixelColor(Top, [255, 255, 0], 1000, True)
+
+    SetPixelColor([1:10:1], Red, 1000)
+    SetPixelColor([1:10:1], Red, 1000, True)
+
+    SetPixelColor([1:10:1], [255, 255, 0], 1000)
+    SetPixelColor([1:10:1], [255, 255, 0], 1000, True)
+
+    SetPixelColor(Rand1, [255, 255, 0], 1000)
+    SetPixelColor(Rand1, [255, 255, 0], 1000, True)
+
+    SetPixelColor([1:10:1], RC1, 1000)
+    SetPixelColor(Rand1, RC2, 1000, True)
+    SetPixelColor(Rand1, RC3, 1000, True)
 }
