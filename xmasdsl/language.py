@@ -30,8 +30,27 @@ def model_proc(model, metamodel):
     #     f'Board {c.board.name} does not have a pin '
     #     f'named {pin_conn.boardPin}'
     # )
-
-
+def entity_obj_processor(entity):
+	'''
+	Check that Ethe ntity names are capitalized. This could also be specified
+	in the grammar using regex match but we will do that check here just
+	as an example.
+	'''
+	# print(entity.name)
+	pass
+#   if entity.name != entity.name.capitalize():
+#     raise TextXSemanticError('Entity name "%s" must be capitalized.' %
+#                             entity.name, **get_location(entity))
+    
+def attribute_obj_processor(attribute):
+	print("Attribute Proccessor!!")
+	'''
+	Obj. processors can also introduce changes in the objects they process.
+	Here we set "primitive" attribute based on the Entity they refer to.
+	'''
+	# attribute.primitive = attribute.type.name in ['integer', 'string']	
+	pass
+  
 def get_metamodel(debug=False) -> Any:
     metamodel = metamodel_from_file(
         CURRENT_FPATH.joinpath('grammar/xmas.tx'),
@@ -50,7 +69,10 @@ def get_metamodel(debug=False) -> Any:
 
     metamodel.register_obj_processors({
         # EMPTY
+        'Entity': entity_obj_processor,
+    	'Attribute': attribute_obj_processor,
     })
+    
     return metamodel
 
 
