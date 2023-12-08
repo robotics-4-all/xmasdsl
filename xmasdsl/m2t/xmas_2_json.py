@@ -47,7 +47,7 @@ def _parseColor(object):
             "colorA": _parseArgument(object.colorDef.colorA),
             "colorB": _parseArgument(object.colorDef.colorB)
         }
-    
+
     else:
         return {
             "colorA": _parseArgument(object),
@@ -135,6 +135,43 @@ def objectToJSON(model):
             "setPixelColor": {
                 "range": _parseRanges(model.range),
                 "color": _parseColor(model.color),
+                "duration": model.duration,
+                "maintain": model.maintain
+            }
+        }
+    elif _is(model) == "Dim":
+        # print(">> DIM")
+        print(model.__dict__.keys())
+        # print(model.fadeIn)
+        return {
+            "dim": {
+                "range": _parseRanges(model.range),
+                "color": _parseColor(model.color),
+                "fadeIn": model.fadeIn
+            }
+        }
+    elif _is(model) == "Rainbow":
+        # print(">> Rainbow")
+        print(model.__dict__.keys())
+        return {
+            "rainbow": {
+                "range": _parseRanges(model.range),
+                "colorStart": _parseColor(model.colorStart),
+                "colorEnd": _parseColor(model.colorEnd),
+                "duration": model.duration,
+                "maintain": model.maintain
+            }
+        }
+
+    elif _is(model) == "Linear":
+        print(">> Linear")
+        print(model.__dict__.keys())
+        return {
+            "linear": {
+                "rangeStart": _parseRanges(model.rangeStart),
+                "rangeEnd": _parseRanges(model.rangeEnd),
+                "colorStart": _parseColor(model.colorStart),
+                "colorEnd": _parseColor(model.colorEnd),
                 "duration": model.duration,
                 "maintain": model.maintain
             }

@@ -1,5 +1,6 @@
 RandomRange Rand1 ([1:100:2], 120)
 Range Top [1:10:1]
+Range Bot [2:20:1]
 
 Color Red [255, 0, 0]
 Color Blue [0, 0, 255]
@@ -9,6 +10,7 @@ RandomColor RC2 ([0,0,0], [100, 100, 100])
 RandomColor RC3 ([0,0,0], Blue)
 
 Program {
+    // Range Testing
     SetPixelColor(Top, Red, 1000)
     SetPixelColor(Top, Red, 1000, True)
 
@@ -27,4 +29,26 @@ Program {
     SetPixelColor([1:10:1], RC1, 1000)
     SetPixelColor(Rand1, RC2, 1000, True)
     SetPixelColor(Rand1, RC3, 1000, True)
+
+    // Test Delay
+    Delay(10)
+    Delay(100)
+    Delay(1000)
+
+    // Test SetBrightness
+    SetBrightness(100)
+
+    // Test Dim
+    Dim([1:100:1], Red, 1000, true)
+    Dim(Top, [100, 100, 100], 1000)
+
+    // Test Rainbow
+    Rainbow(Top, RC1, RC2, 1000)
+    Rainbow([1:100:1], Red, Blue, 1000, False)
+    Rainbow(Top, Red, [100, 100, 100], 1000, True)
+
+    // Test Linear
+    Linear(Top, Bot, Red, Blue, 1000)
+    Linear([1:100:1], [1:100:1], Red, Blue, 1000, True)
+    Linear(Top, Bot, [100, 100, 100], Blue, 1000, False)
 }
