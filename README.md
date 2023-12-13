@@ -118,16 +118,29 @@ Program {
 ## Commands
 
 ### 1. SetPixelColor
+```
+SetPixelColor(RANGE, COLOR, DURATION, MAINTAIN=true)
+```
 
-### 2. SetBrightness
+### 2. Dim
+```
+Dim(RANGE, COLOR, DURATION, FADE_IN=false)
+```
 
-### 3. Dim
+### 3. Rainbow
+```
+Rainbow(RANGE, START_COLOR, END_COLOR, DURATION, MAINTAIN=false)
+```
 
-### 4. ColorTransition
+### 4. Linear
+```
+Linear(START_RANGE, END_RANGE, START_COLOR, END_COLOR, DURATION, MAINTAIN=false)
+```
 
-### 5. Linear
-
-### 6. Delay
+### 5. Delay
+```
+Delay(DURATION)
+```
 
 ## Examples
 
