@@ -30,26 +30,16 @@ def model_proc(model, metamodel):
     #     f'Board {c.board.name} does not have a pin '
     #     f'named {pin_conn.boardPin}'
     # )
-def entity_obj_processor(entity):
-	'''
-	Check that Ethe ntity names are capitalized. This could also be specified
-	in the grammar using regex match but we will do that check here just
-	as an example.
-	'''
-	# print(entity.name)
-	pass
-#   if entity.name != entity.name.capitalize():
-#     raise TextXSemanticError('Entity name "%s" must be capitalized.' %
-#                             entity.name, **get_location(entity))
-    
-def attribute_obj_processor(attribute):
-	print("Attribute Proccessor!!")
-	'''
-	Obj. processors can also introduce changes in the objects they process.
-	Here we set "primitive" attribute based on the Entity they refer to.
-	'''
-	# attribute.primitive = attribute.type.name in ['integer', 'string']	
-	pass
+def color_obj_processor(color):
+	if color.r.val > 255 or color.r.val < 0:
+		raise_validation_error(color, "Red value out of range")
+	if color.g.val > 255 or color.g.val < 0:
+		raise_validation_error(color, "Green value out of range")
+	if color.b.val > 255 or color.b.val < 0:
+		raise_validation_error(color, "Blue value out of range")
+
+def linear_obj_processor(linear):
+    pass
   
 def get_metamodel(debug=False) -> Any:
     metamodel = metamodel_from_file(
@@ -69,8 +59,8 @@ def get_metamodel(debug=False) -> Any:
 
     metamodel.register_obj_processors({
         # EMPTY
-        'Entity': entity_obj_processor,
-    	'Attribute': attribute_obj_processor,
+        'Color': color_obj_processor,
+        'Linear': linear_obj_processor,
     })
     
     return metamodel
