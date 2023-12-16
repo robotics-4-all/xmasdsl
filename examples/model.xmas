@@ -1,12 +1,14 @@
-RandomRange Rand1 ([1:100:2], 120)
-Range Top [1:10:1]
-Range Bot [2:20:1]
+Range One [10, 449]
+Range Top [10:10:1]
+Range Bot [0:20:1]
+
+RandomRange Rand1 ([1:449:2], 50)
 
 Color Red [255, 0, 0]
 Color Blue [0, 0, 255]
 
 RandomColor RC1 (Red, Blue)
-RandomColor RC2 ([0,0,0], [100, 100, 100])
+RandomColor RC2 ([0,0,4], [100, 100, 100])
 RandomColor RC3 ([0,0,0], Blue)
 
 Program {

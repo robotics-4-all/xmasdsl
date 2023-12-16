@@ -10,6 +10,8 @@ from typing import Any, Dict, List, Optional
 from pydantic import BaseModel
 from textx import get_location, TextXSemanticError
 
+MAX_LEDS = 449
+
 pretty.install()
 
 CURRENT_FPATH = pathlib.Path(__file__).parent.resolve()
@@ -22,23 +24,39 @@ def raise_validation_error(obj, msg):
         **get_location(obj)
     )
 
-
 def model_proc(model, metamodel):
     pass
-    # raise_validation_error(
-    #     LANDUAGE_COMPONENT,
-    #     f'Board {c.board.name} does not have a pin '
-    #     f'named {pin_conn.boardPin}'
-    # )
+
 def color_obj_processor(color):
-	if color.r.val > 255 or color.r.val < 0:
-		raise_validation_error(color, "Red value out of range")
-	if color.g.val > 255 or color.g.val < 0:
-		raise_validation_error(color, "Green value out of range")
-	if color.b.val > 255 or color.b.val < 0:
-		raise_validation_error(color, "Blue value out of range")
+	# print("Color:", color)
+	if int(color.r.val) > 255 or int(color.r.val) < 0:
+		raise_validation_error(color, "Red value out of range: [0, 255]")
+	if int(color.g.val) > 255 or int(color.g.val) < 0:
+		raise_validation_error(color, "Green value out of range: [0, 255]")
+	if int(color.b.val) > 255 or int(color.b.val) < 0:
+		raise_validation_error(color, "Blue value out of range: [0, 255]")
+
+# def random_color_obj_processor(rand_color):
+#     # print("Random color:", rand_color.__dict__)
+#     if rand_color.color != None:
+#         # print("---", rand_color.color.__dict__)
+#         color_obj_processor(rand_color.color)
+#     pass
+
+def range_obj_processor(range):
+	# print("Range:", range.__dict__)
+	if int(range.start) < 0 or int(range.end) > MAX_LEDS or int(range.start) > MAX_LEDS:
+		raise_validation_error(range, f'Invalid range. Value is out of bounds: [0, {MAX_LEDS}]')
+	pass
+
+def random_range_obj_processor(rand_range):
+    # print("Rand_range", rand_range.__dict__)
+    if (int(rand_range.percentage) > 100 or int(rand_range.percentage) < 0):
+        raise_validation_error(rand_range, f'Invalid percentage. Value is out of bounds: [0, 100]')
+    pass
 
 def linear_obj_processor(linear):
+    # print("Linear", linear)
     pass
   
 def get_metamodel(debug=False) -> Any:
@@ -58,8 +76,10 @@ def get_metamodel(debug=False) -> Any:
     metamodel.register_model_processor(model_proc)
 
     metamodel.register_obj_processors({
-        # EMPTY
+        # 'RandomColorArgument': random_color_obj_processor,
         'Color': color_obj_processor,
+        'Range': range_obj_processor,
+        'RandomRangeDef': random_range_obj_processor,
         'Linear': linear_obj_processor,
     })
     
