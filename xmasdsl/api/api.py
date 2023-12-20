@@ -16,7 +16,8 @@ from fastapi.security import APIKeyHeader
 
 from xmasdsl.language import (
     build_model,
-    validate_model_file
+    validate_model_file,
+    estimate_model_duration
 )
 
 from xmasdsl.m2t import model_to_json
@@ -30,6 +31,7 @@ api_keys = [
 api = FastAPI()
 
 api_key_header = APIKeyHeader(name="X-API-Key")
+
 
 def get_api_key(api_key_header: str = Security(api_key_header)) -> str:
     if api_key_header in api_keys:
@@ -84,9 +86,10 @@ async def validate(model: ValidationModel,
     with open(fpath, 'w') as f:
         f.write(text)
     try:
-        validate_model_file(fpath)
+        model = validate_model_file(fpath)
         print('Model validation success!!')
         resp['message'] = 'Model validation success'
+        resp['duration'] = estimate_model_duration(model)
     except Exception as e:
         print('Exception while validating model. Validation failed!!')
         print(e)
@@ -99,7 +102,7 @@ async def validate(model: ValidationModel,
 @api.post("/validate/file")
 async def validate_file(file: UploadFile = File(...),
                         api_key: str = Security(get_api_key)):
-    print(f'Validation for model: file=<{file.filename}>,' + \
+    print(f'Validation for model: file=<{file.filename}>,' +
           f' descriptor=<{file.file}>')
     resp = {
         'status': 200,
@@ -164,7 +167,7 @@ async def gen_json(xmas_model: TransformationModel = Body(...),
         'message': '',
         'code': ''
     }
-    model =  xmas_model.model
+    model = xmas_model.model
     u_id = uuid.uuid4().hex[0:8]
     model_path = os.path.join(
         TMP_DIR,
@@ -179,7 +182,7 @@ async def gen_json(xmas_model: TransformationModel = Body(...),
     with open(model_path, 'w') as f:
         f.write(model)
     try:
-        ## TODO
+        # TODO
         model = build_model(model_path)
         model_json = model_to_json(model)
         resp['message'] = 'XmasDSL-2-JsonModel Transformation success'

@@ -197,7 +197,7 @@ def transform(model) -> Dict[str, Any]:
 
     xmas_json: Dict[str, str] = json.dumps({
         'program': json_model,
-        "duration": duration
+        'duration': duration
     })
 
     return xmas_json
