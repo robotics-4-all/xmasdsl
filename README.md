@@ -122,7 +122,7 @@ Range myRandomRange2 ([startingPixel:endingPixel], 50)  // this range reference 
 
 ```
 Range myRandomRange1 ([2, 7, 10], 30)                   // this random Range selects 30% of pixel Range [2, 7, 10].
-Range myRandomRange2 ([1:10], 10)                       // this random Range selects 30% of pixel Range [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+Range myRandomRange2 ([1:10], 10)                       // this random Range selects 10% of pixel Range [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 ```
 
 ```
