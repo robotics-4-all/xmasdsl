@@ -129,8 +129,6 @@ Range myRandomRange2 ([1:10], 10)                       // this random Range sel
 Note: A random Range declaration cannot be used inside another random Range declaration.
 ```
 
-### 3. RandomRange // TODO
-
 ## Blocks
 
 ### 1. Program
