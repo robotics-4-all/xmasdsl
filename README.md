@@ -118,30 +118,58 @@ Program {
 ## Commands
 
 ### 1. SetPixelColor
+This function sets the color of a specified pixel range for a given time DURATION(milliseconds). If MAINTAIN is set to ```true```, the pixels will retain their color until changed again. MAINTAIN defaults to ```true```.
 ```
 SetPixelColor(RANGE, COLOR, DURATION, MAINTAIN=true)
 ```
+<b>Examples:</b>
+```
+SetPixelColor(Top, Red, 1000) // where Top is a pixel range defined
+							  // earlier and Red is a defined Color
+SetPixelColor([1:10:1], [255, 255, 0], 1000)
+SetPixelColor([1:10:1], [255, 255, 0], 1000, True)
+```
 
 ### 2. Dim
+This function fades in or fades out (according the the boolean parameter FADE_IN) the pixels of RANGE. The animation speed will depend on the chosen DURATION(milliseconds). FADE_IN defaults to false.
 ```
 Dim(RANGE, COLOR, DURATION, FADE_IN=false)
 ```
-
+<b>Examples:</b>
+```
+Dim([1:100:1], Red, 1000, true)
+Dim(Top, [100, 100, 100], 1000)
+```
 ### 3. Rainbow
+This function tansitions the color of the given pixel range from START_COLOR to END_COLOR in the specified DURATION(milliseconds). If MAINTAIN is set to ```true```, the pixels will retain their color until changed again. MAINTAIN defaults to ```false```.
 ```
 Rainbow(RANGE, START_COLOR, END_COLOR, DURATION, MAINTAIN=false)
 ```
-
+<b>Examples:</b>
+```
+Rainbow(Top, [255, 0, 0], [0, 255, 0], 1000)
+Rainbow([1:100:1], Red, Blue, 1000, False)
+```
 ### 4. Linear
+This function "moves" the pixel range defined in START_RANGE to the END_RANGE. It will traverse the pixels in between until it reaches the end. At the same time, it will transition the colors of the pixels from START_COLOR to END_COLOR. If MAINTAIN is set to ```true```, the pixels will retain their color until changed again. MAINTAIN defaults to ```false```.
 ```
 Linear(START_RANGE, END_RANGE, START_COLOR, END_COLOR, DURATION, MAINTAIN=false)
 ```
-
+<b>Examples:</b>
+```
+Linear(Top, Bot, Red, Blue, 1000)
+Linear([1:100:1], [1:100:1], Red, Blue, 1000, True)
+Linear(Top, Bot, [100, 100, 100], Blue, 1000, False)
+```
 ### 5. Delay
+This function will stop the flow of the execution for the specified time in milliseconds.
 ```
 Delay(DURATION)
 ```
-
+<b>Example:</b>
+```
+Delay(500)
+```
 ## Examples
 
 ### 1. Color rotation
