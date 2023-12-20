@@ -4,7 +4,7 @@
 
 A textual DSL that allows manipulation of a led strip, placed on a wall or Christmass tree! The available commands and examples can be seen below:
 
-XmasDSL has various <b>Data Types</b> for pixel and color manipulation, <b>Functions</b> that implement specific animations as well as <b>Structural Components</b> that manipulate the program flow.
+XmasDSL has various <b>`Data Types`</b> for pixel and color manipulation, <b>`Functions`</b> that implement specific animations as well as <b>`Structural Components`</b> that manipulate the program flow.
 
 ## Data types
 
