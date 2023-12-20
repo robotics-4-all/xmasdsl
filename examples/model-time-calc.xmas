@@ -17,7 +17,7 @@ Group Light1 {
     Serial{
       Parallel {
         Serial {
-          SetPixelColor(Part01, Blue, 200)
+          SetPixelColor(Part01, Blue, 400)
         }
         Serial {
           SetPixelColor(Part02, Red, 200)
