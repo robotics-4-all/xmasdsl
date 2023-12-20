@@ -4,15 +4,15 @@
 
 A textual DSL that allows manipulation of a led strip, placed on a wall or Christmass tree! The available commands and examples can be seen below:
 
-XmasDSL posses various <b>Data Types</b> for pixel and color manipulation, <b>Functions</b> that implement specific animations as well as <b>Structural Components</b> that manipulate the program flow.
+XmasDSL has various <b>Data Types</b> for pixel and color manipulation, <b>Functions</b> that implement specific animations as well as <b>Structural Components</b> that manipulate the program flow.
 
 ## Data types
 
-### Color
+### 1. Color
 
 In XmasDSL currently there are three ways that one can select a color.
 
-#### 1. Direct Color Replacement
+#### 1.1 Direct Color Replacement
 
 Place the color component directly inside a function.
 
@@ -26,9 +26,9 @@ Function (..., [RedValue, GreenValue, BlueValue], ...) // each value can range f
 SetPixelColor(Pixels, [255, 0, 0], duration, maintain)
 ```
 
-#### 2. Color Declaration
+#### 1.2 Color Declaration
 
-Declare a color component that from now own it will be referred with a name.
+Declare a color component that from now on it will be referenced with a name.
 
 ```
 Color MyColor [RedValue, GreenValue, BlueValue] // Each value can range from 0 to 255
@@ -42,7 +42,7 @@ Color Green [0, 0, 255]     // This creates a green Color
 Color Blue [0, 0, 255]      // This creates a blue Color
 ```
 
-#### 3. Random Color Declaration
+#### 1.3 Random Color Declaration
 
 Declare a color component that will receive a random color between two values. These values can be a direct color replacement or a color declaration.
 
@@ -61,24 +61,24 @@ RandomColor myRandColor ([0, 255, 0], Red) // This will generate a random color 
 Note: A random Color declaration cannot be used inside another random Color declaration.
 ```
 
-### Range
+### 2. Range
 
-Ranges are practically groups of pixels. All functions in order to work properly require at least one pixel group and one color. A Range can contain one or more group of Pixels, separated by a comma. A group can be a single Value or a continue series of pixels.
+Ranges are practically groups of pixels. All functions in order to work properly require at least one pixel group and one color. A Range can contain one or more groups of Pixels, separated by a comma. A group can be a single Value or a continues series of pixels.
 
 ```
 [startingPixel]                     // a single pixel.
-[startingPixel:endingPixel]         // all pixels from startingPixel to endingPixel.
-[startingPixel:endingPixel:step]    // all pixels from startingPixel to endingPixel moving by step pixels.
+[startingPixel:endingPixel]         // all pixels from startingPixel to endingPixel(including ending pixel).
+[startingPixel:endingPixel:step]    // all pixels from startingPixel to endingPixel(including ending pixel) moving by step pixels.
 ```
 
-#### 1. Direct Range Replacement
+#### 2.1 Direct Range Replacement
 
-Place the Range type directly inside a function.
+Place the ```Range``` type directly inside a function.
 
 ```
 Function ([pixel1, pixel2, pixel3], Red, ...)           // this range reference the pixel1, pixel2, pixel3 of the led strip.
 Function ([startingPixel:endingPixel], Red, ...)        // this range reference all the pixels from the 1st till the 10th (including it).
-Function ([startingPixel:endingPixel:step], Red, ...)   // this range reference all the even pixels between the 1st and the 10th (including it).
+Function ([startingPixel:endingPixel:step], Red, ...)   // this range reference all the even pixels between the 1st and the 10th.
 ```
 
 <b>Example:</b>
@@ -90,9 +90,9 @@ SetPixelColor([0:10:2], Red, duration, maintain)        // this reference pixels
 SetPixelColor([1:10:2, 15], Red, duration, maintain)    // this reference pixels [1, 3, 5, 7, 9, 15] of the led strip.
 ```
 
-#### 2. Range Declaration
+#### 2.2 Range Declaration
 
-Declare a Range of pixels component that from now own it will be referred with a name.
+Declare a Range of pixels component that from now on it will be referenced with a name.
 
 ```
 Range myRange1 [pixel1, pixel2, pixel3]                 // this range reference the pixel1, pixel2, pixel3 of the led strip.
@@ -109,9 +109,9 @@ Range myRange3 [0:10:2]                                 // this reference pixels
 Range myRange4 [1:10:2, 15]                             // this reference pixels [1, 3, 5, 7, 9, 15] of the led strip.
 ```
 
-#### 3. Random Range Declaration
+#### 2.3 Random Range Declaration
 
-Declare a Random Range of pixels. This Random Range will be constituted by randomly selected pixels from teh original Range with a [x]% chance.
+Declare a Random Range of pixels. This Random Range will be constituted by randomly selected ```X%``` of the original Range.
 
 ```
 Range myRandomRange1 ([pixel1, pixel2, pixel3], 30)     // this range reference the pixel1, pixel2, pixel3 of the led strip.
@@ -133,7 +133,7 @@ Note: A random Range declaration cannot be used inside another random Range decl
 
 ### 1. Program
 
-This is the most outer block. All other blocks (apart from [Group](/#Group)) exist inside this one. Each block opens with `{` and ends with `}`  
+This is the most outer block. All other blocks (apart from [Group](/#Group)) must exist inside this one. Each block opens with `{` and ends with `}`  
 <b>Example:</b>
 
 ```
@@ -142,9 +142,12 @@ Program {
 }
 ```
 
+```
+Note: by default the Program block executes serially all the other blocks and commands inside it.
+```
 ### 2. Serial
 
-All the commands in the block will execute one after the other.  
+All the commands inside this block will be executed one after the other.  
 <b>Example:</b>
 
 ```
@@ -155,30 +158,32 @@ Program {
 }
 ```
 
-Note: by default the Program block executes the inside blocks serially.
+
 
 ### 3. Parallel
 
-This one is meant for blocks and not commands. All the blocks inside will be executed in concurrently. For example you can light up the topHalf of the led strip int blue and the bottom half in red.  
+This one can contain only `Serial`, `Repeat` and `Group References`. All blocks inside it will be executed concurrently. For example you can light up the topHalf of the led strip in a blue `Color` and the bottom half in a red `Color`. The program will exit from the parallel block after the block with the highest duration finishes.  
 <b>Example:</b>
 
 ```
 Program {
 	Parallel {
 		Serial {
-			Command1
+			SetPixelColor([0:225:1], [0, 0, 255], 1000)
 		}
 		Serial {
-			Command2
+			SetPixelColor([226:450:1], [255, 0, 0], 2000)
 		}
-  		...other blocks
+  		// ...other blocks
 	}
 }
 ```
 
+`Note`: In this example the `Parallel` block will exit after 2000 milliseconds.
+
 ### 4. Group
 
-Use this block to create reusable actions. The actions are referenced by their name inside other blocks.  
+Use this block to create reusable code segments. These code segments are referenced by their name inside other blocks.  
 <b>Example:</b>
 
 ```
@@ -198,7 +203,7 @@ Program {
 
 ### 5. Repeat
 
-Use this block to run the commands (or blocks) inside many times.
+Use this block to serially run the commands (or blocks) inside it many times (`NUM_OF_TIMES`).
 
 ```
 Repeat NUM_OF_TIMES {
@@ -229,12 +234,13 @@ Program {
 	}
 }
 ```
+`Note`: This block will be executed `10` times.
 
 ## Commands
 
 ### 1. SetPixelColor
 
-This function sets the color of a specified pixel range for a given time DURATION(milliseconds). If MAINTAIN is set to `true`, the pixels will retain their color until changed again. MAINTAIN defaults to `true`.
+This function sets the color of the specified pixel range for a given time `DURATION` (milliseconds). If `MAINTAIN` is set to `true`, the pixels will retain their color until changed again. `MAINTAIN` defaults to `true`.
 
 ```
 SetPixelColor(RANGE, COLOR, DURATION, MAINTAIN=true)
@@ -251,7 +257,7 @@ SetPixelColor([1:10:1], [255, 255, 0], 1000, True)
 
 ### 2. Dim
 
-This function fades in or fades out (according the the boolean parameter FADE_IN) the pixels of RANGE. The animation speed will depend on the chosen DURATION(milliseconds). FADE_IN defaults to false.
+This function fades in (`FADE_IN` = true) or fades out (`FADE_IN` = false) the pixels of `RANGE` with the selected `Color`. The whole animation will last `DURATION` milliseconds. `FADE_IN` defaults to `false`. 
 
 ```
 Dim(RANGE, COLOR, DURATION, FADE_IN=false)
@@ -266,7 +272,7 @@ Dim(Top, [100, 100, 100], 1000)
 
 ### 3. Rainbow
 
-This function tansitions the color of the given pixel range from START_COLOR to END_COLOR in the specified DURATION(milliseconds). If MAINTAIN is set to `true`, the pixels will retain their color until changed again. MAINTAIN defaults to `false`.
+This function tansitions the color of the given pixel `Range` from `START_COLOR` to `END_COLOR` in the specified `DURATION` (milliseconds). If `MAINTAIN` is set to `true`, the pixels will retain their color until changed again. `MAINTAIN` defaults to `false`.
 
 ```
 Rainbow(RANGE, START_COLOR, END_COLOR, DURATION, MAINTAIN=false)
@@ -281,7 +287,7 @@ Rainbow([1:100:1], Red, Blue, 1000, False)
 
 ### 4. Linear
 
-This function "moves" the pixel range defined in START_RANGE to the END_RANGE. It will traverse the pixels in between until it reaches the end. At the same time, it will transition the colors of the pixels from START_COLOR to END_COLOR. If MAINTAIN is set to `true`, the pixels will retain their color until changed again. MAINTAIN defaults to `false`.
+This function "moves" the pixel `Range` defined in `START_RANGE` to the `END_RANGE`. It will traverse the pixels in between until it reaches the end. At the same time, it will transition the colors of the pixels from `START_COLOR` to `END_COLOR`. If `MAINTAIN` is set to `true`, the pixels will retain their color until changed again. `MAINTAIN` defaults to `false`.
 
 ```
 Linear(START_RANGE, END_RANGE, START_COLOR, END_COLOR, DURATION, MAINTAIN=false)
@@ -297,7 +303,7 @@ Linear(Top, Bot, [100, 100, 100], Blue, 1000, False)
 
 ### 5. Delay
 
-This function will stop the flow of the execution for the specified time in milliseconds.
+This function will halt the flow of the execution in the current block for the specified `DURATION` in milliseconds.
 
 ```
 Delay(DURATION)
@@ -314,9 +320,9 @@ Delay(500)
 ### 1. Color rotation
 
 ```
-Range Part1 [1:90:1]
-Range Part2 [90:180:1]
-Range Part3 [180:270:1]
+Range Part1 [0:150:1]
+Range Part2 [150:300:1]
+Range Part3 [300:450:1]
 Color Green [0, 240, 0]
 Color Red [255, 0, 0]
 Color Blue [0, 0, 255]
@@ -372,45 +378,30 @@ Program {
 }
 ```
 
-## Installation
-
-We suggest you create a Python venv.
-
-```bash
-python -m venv venv && source ./venv/bin/activate
-```
-
-or for windows
+### 2. Color rotation
 
 ```
-source ./venv/Scripts/activate
-```
+Color Green [0, 230, 0]
+Color Red [255, 0, 0]
+Color Blue [0, 0, 255]
+Color Dark [5, 5, 5]
 
-Install the DSL in development mode to track changes automatically:
+RandomRange Rand1 ([0:449:1], 30)
+Range All [0:449:1]
 
-```bash
-python setup.py develop
-```
+Group TurnDark {
+  SetPixelColor(All, Dark, 1, false)
+}
 
-## Run the API server
-
-```bash
-API_KEY=123 uvicorn xmasdsl.api:api --host 0.0.0.0 --port 8090 --reload
-```
-
-The API_KEY environmental variable has an obvious purpose!
-
-## Use the CLI
-
-```bash
-venv [I] ➜ xmas --help
-Usage: xmasdsl [OPTIONS] COMMAND [ARGS]...
-
-Options:
-  --help  Show this message and exit.
-
-Commands:
-  gen       M2T transformation
-  validate  Model Validation
-
+Program {
+  TurnDark
+  Repeat 5 {
+    SetPixelColor(Rand1, Red, 500, false)
+    TurnDark
+    SetPixelColor(Rand1, Green, 500, false)
+    TurnDark
+    SetPixelColor(Rand1, Blue, 500, false)
+    TurnDark
+  }
+}
 ```
