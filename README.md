@@ -378,7 +378,7 @@ Program {
 }
 ```
 
-### 2. Color rotation
+### 2. Random Range
 
 ```
 Color Green [0, 230, 0]
