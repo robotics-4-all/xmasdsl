@@ -205,7 +205,7 @@ Program {
 			SetPixelColor([0:225:1], [0, 0, 255], 1000)
 		}
 		Serial {
-			SetPixelColor([226:450:1], [255, 0, 0], 2000)
+			SetPixelColor([226:449:1], [255, 0, 0], 2000)
 		}
   		// ...other blocks
 	}
