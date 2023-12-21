@@ -6,6 +6,10 @@ A textual DSL that allows manipulation of a led strip, placed on a wall or Chris
 
 XmasDSL has various <b>`Data Types`</b> for pixel and color manipulation, <b>`Functions`</b> that implement specific animations as well as <b>`Structural Components`</b> that manipulate the program flow.
 
+
+
+![ScreenShot](https://cdn.discordapp.com/attachments/1176508348372369408/1187301249331249182/Led_indexes.png?ex=65966374&is=6583ee74&hm=3c3489f5a167e2a43944d19f8ad620364a6cc3b126ab735da2e79095bfbb2889&)
+
 ## Data types
 
 ### 1. Color
@@ -73,7 +77,7 @@ Ranges are practically groups of pixels. All functions in order to work properly
 
 #### 2.1 Direct Range Replacement
 
-Place the ```Range``` type directly inside a function.
+Place the `Range` type directly inside a function.
 
 ```
 Function ([pixel1, pixel2, pixel3], Red, ...)           // this range reference the pixel1, pixel2, pixel3 of the led strip.
@@ -128,6 +132,36 @@ Range myRandomRange2 ([1:10], 10)                       // this random Range sel
 ```
 Note: A random Range declaration cannot be used inside another random Range declaration.
 ```
+
+### Ranges Example
+We can define three different `Ranges` for the whole tree and assign different `Colors` to each one. We are also using the `Parallel` and the `Serial` blocks (defined below) in order to light all the pixel `Ranges` at the same time. The result is shown in the following image.
+
+```
+Range Part1 [0:150:1]
+Range Part2 [150:300:1]
+Range Part3 [300:449:1]
+
+Color Red [255, 0, 0]
+Color Green [0, 255, 0]
+Color Blue [0, 0, 255]
+
+Program {
+  Parallel {
+    Serial{
+      SetPixelColor(Part1, Blue, 5000)
+    }
+    Serial{
+      SetPixelColor(Part2, Green, 5000)
+    }
+    Serial{
+      SetPixelColor(Part3, Red, 5000)
+    }
+  }
+}
+```
+
+![ScreenShot](https://cdn.discordapp.com/attachments/1176508348372369408/1187044417022984222/viber_image_2023-12-20_16-28-27-994.jpg?ex=65957443&is=6582ff43&hm=67912ca3a60ca74ba2f8d7d4aeceb7ffcc5df24a5e2c2b349bb109605eae1bed&)
+
 
 ## Blocks
 
