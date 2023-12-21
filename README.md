@@ -7,8 +7,7 @@ A textual DSL that allows manipulation of a led strip, placed on a wall or Chris
 XmasDSL has various <b>`Data Types`</b> for pixel and color manipulation, <b>`Functions`</b> that implement specific animations as well as <b>`Structural Components`</b> that manipulate the program flow.
 
 
-
-![ScreenShot](https://cdn.discordapp.com/attachments/1176508348372369408/1187301249331249182/Led_indexes.png?ex=65966374&is=6583ee74&hm=3c3489f5a167e2a43944d19f8ad620364a6cc3b126ab735da2e79095bfbb2889&)
+<img src="https://cdn.discordapp.com/attachments/1176508348372369408/1187301249331249182/Led_indexes.png?ex=65966374&is=6583ee74&hm=3c3489f5a167e2a43944d19f8ad620364a6cc3b126ab735da2e79095bfbb2889&" alt="image" width="450" height="auto">
 
 ## Data types
 
@@ -160,7 +159,7 @@ Program {
 }
 ```
 
-![ScreenShot](https://cdn.discordapp.com/attachments/1176508348372369408/1187044417022984222/viber_image_2023-12-20_16-28-27-994.jpg?ex=65957443&is=6582ff43&hm=67912ca3a60ca74ba2f8d7d4aeceb7ffcc5df24a5e2c2b349bb109605eae1bed&)
+<img src="https://cdn.discordapp.com/attachments/1176508348372369408/1187044417022984222/viber_image_2023-12-20_16-28-27-994.jpg?ex=65957443&is=6582ff43&hm=67912ca3a60ca74ba2f8d7d4aeceb7ffcc5df24a5e2c2b349bb109605eae1bed&" alt="image" width="400" height="auto">
 
 
 ## Blocks
