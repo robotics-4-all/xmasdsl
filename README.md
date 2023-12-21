@@ -355,7 +355,7 @@ Delay(500)
 ```
 Range Part1 [0:150:1]
 Range Part2 [150:300:1]
-Range Part3 [300:450:1]
+Range Part3 [300:449:1]
 Color Green [0, 240, 0]
 Color Red [255, 0, 0]
 Color Blue [0, 0, 255]
